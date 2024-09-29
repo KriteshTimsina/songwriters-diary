@@ -30,8 +30,6 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
   const [note, setNote] = useState<SongInput>(song ?? initialValue);
   const {onSaveNote} = useNotes();
 
-  console.log(note, 'what ');
-
   const onChange = async (key: keyof SongInput, value: string) => {
     if (value.trim() === '') return;
     setNote((prev: SongInput) => ({
@@ -55,13 +53,20 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
     // }, 3000);
   };
 
-  console.log(note, 'WHAT ');
-
   const saveNote = async () => {
     try {
+      if (note.content === '' || note.title === '') {
+        return;
+      }
       const saved = await onSaveNote(note);
-      if (saved) setNote(saved);
-      console.log(saved, 'HUHUHU');
+      if (saved) {
+        setNote(saved);
+        ToastAndroid.showWithGravity(
+          'Saved',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
+      }
     } catch (error) {}
   };
 

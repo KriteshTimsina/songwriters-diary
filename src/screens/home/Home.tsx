@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Wrapper} from '../../components/reuseables';
+import {NoteCard, Wrapper} from '../../components/reuseables';
 import {Text} from '../../components/reuseables';
 import CreateButton from '../../components/svgs/CreateButton';
 import {data} from '../../data';
@@ -16,6 +16,7 @@ import {HomeStackParamsList} from '../../navigation/HomeStack';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {Songs} from '../../interfaces/songs';
 import useNotes from '../../hooks/useNotes';
+import EmptyNotes from '../../components/svgs/EmptyNotes';
 
 const Home = () => {
   const {notes, loadSongNotes} = useNotes();
@@ -45,20 +46,22 @@ const Home = () => {
             onRefresh={getNotes}
           />
         }
+        ListEmptyComponent={() => (
+          <View style={styles.emptyContainer}>
+            <EmptyNotes />
+            <Text
+              style={{width: '80%', textAlign: 'center'}}
+              size="xl"
+              color={Colors.text.base}>
+              Create Something Magical. Start Now
+            </Text>
+          </View>
+        )}
         refreshing={refreshing}
         showsVerticalScrollIndicator={false}
         data={notes}
         keyExtractor={item => item.id.toString()}
-        renderItem={({item}: {item: Songs}) => (
-          <Pressable
-            onPress={() => navigation.navigate('Editor', {song: item})}
-            style={[styles.card, {backgroundColor: item.color ?? '#D9E8FC'}]}>
-            <Text size="lg" weight="700">
-              {item.title}
-            </Text>
-            <Text color={Colors.text.base}>{item.content}</Text>
-          </Pressable>
-        )}
+        renderItem={({item}) => <NoteCard item={item} />}
         numColumns={2}
       />
       <CreateButton
@@ -73,13 +76,7 @@ const styles = StyleSheet.create({
   flatListContent: {
     // paddingBottom: 100, // To provide space for the FAB at the bottom
   },
-  card: {
-    width: '48%', // To give spacing for two columns
-    padding: 10,
-    margin: 5,
-    borderRadius: 6,
-    alignSelf: 'flex-start', // Let each card expand based on its content
-  },
+
   fab: {
     position: 'absolute',
     margin: 16,
@@ -87,6 +84,14 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  emptyContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    gap: 20,
+    flexDirection: 'column',
+    marginTop: 50,
   },
 });
 
