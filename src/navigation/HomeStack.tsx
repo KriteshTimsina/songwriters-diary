@@ -1,9 +1,10 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import {Editor, Home} from '../screens';
 import {StyleSheet} from 'react-native';
+import TabNavigation from './TabNavigation';
 
 export type HomeStackParamsList = {
-  Home: undefined;
+  TabNavigation: undefined;
   Editor: undefined;
 };
 
@@ -16,8 +17,8 @@ const HomeStack = () => {
         options={{
           headerShown: false,
         }}
-        name="Home"
-        component={Home}
+        name="TabNavigation"
+        component={TabNavigation}
       />
       <HomeStackNavigation.Screen
         options={{

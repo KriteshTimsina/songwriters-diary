@@ -3,7 +3,7 @@ import {Pressable, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {List, Songs} from '../components/svgs/TabBarIcons';
 import Feather from 'react-native-vector-icons/Feather';
 
-function Tabbar({
+function TabbarTop({
   state,
   descriptors,
   navigation,
@@ -84,7 +84,7 @@ function Tabbar({
     </View>
   );
 }
-export default Tabbar;
+export default TabbarTop;
 
 export const styles = StyleSheet.create({
   setting: {

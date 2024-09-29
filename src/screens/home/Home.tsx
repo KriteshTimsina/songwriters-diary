@@ -5,12 +5,12 @@ import {Text} from '../../components/reuseables';
 import CreateButton from '../../components/svgs/CreateButton';
 import {data} from '../../data';
 import {Colors} from '../../constants';
-import {StackScreenProps} from '@react-navigation/stack';
+import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {HomeStackParamsList} from '../../navigation/HomeStack';
+import {useNavigation} from '@react-navigation/native';
 
-type HomeStackProps = StackScreenProps<HomeStackParamsList, 'Home'>;
-
-const Home = ({navigation}: HomeStackProps) => {
+const Home = () => {
+  const navigation = useNavigation<StackNavigationProp<HomeStackParamsList>>();
   return (
     <Wrapper>
       <FlatList
