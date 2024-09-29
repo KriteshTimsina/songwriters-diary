@@ -3,6 +3,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Text} from 'react-native-paper';
 import {Feather} from './components/icons';
+import {Image} from 'react-native-svg';
+import Onboarding from './components/svgs/Onboarding';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -21,6 +23,7 @@ function HomeScreen() {
   return (
     <View>
       <Text style={styles.text}>Hello World</Text>
+      <Onboarding />
     </View>
   );
 }
