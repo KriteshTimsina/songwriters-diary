@@ -12,6 +12,7 @@ const Colors = {
     main: '#000000',
     base: '#686868',
   },
+  background: '#ffffff',
 };
 
 export default Colors;

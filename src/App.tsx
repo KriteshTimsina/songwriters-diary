@@ -10,6 +10,7 @@ import {Image} from 'react-native-svg';
 import Onboarding from './components/svgs/Onboarding';
 import CreateButton from './components/svgs/CreateButton';
 import {List, Songs} from './components/svgs/TabBarIcons';
+import {Home, Todo} from './screens';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -17,26 +18,10 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name="todo" component={Home} />
+        <Tab.Screen name="home" component={Todo} />
       </Tab.Navigator>
     </NavigationContainer>
-  );
-}
-
-function HomeScreen() {
-  return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
-      <Text style={styles.text}>Hello World</Text>
-      <CreateButton />
-    </View>
-  );
-}
-function SettingsScreen() {
-  return (
-    <View>
-      <Text>Hello Settings</Text>
-    </View>
   );
 }
 
