@@ -1,10 +1,13 @@
-export const data = [
+import {Songs} from './interfaces/songs';
+
+export const data: Songs[] = [
   {
     id: 1,
     title: 'Aauna maya',
     content:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.',
     color: '#D9E8FC',
+    isPinned: false,
   },
   {
     id: 2,
@@ -12,6 +15,7 @@ export const data = [
     content:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.',
     color: '#FFEADD',
+    isPinned: false,
   },
   {
     id: 3,
@@ -19,6 +23,7 @@ export const data = [
     content:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.',
     color: '#FCFAD9',
+    isPinned: false,
   },
   {
     id: 4,
@@ -26,6 +31,7 @@ export const data = [
     content:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.',
     color: '#CBFAE1',
+    isPinned: false,
   },
   {
     id: 5,
@@ -33,6 +39,7 @@ export const data = [
     content:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.',
     color: '#CBFAE1',
+    isPinned: false,
   },
   {
     id: 5,
@@ -40,5 +47,6 @@ export const data = [
     content:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.',
     color: '#CBFAE1',
+    isPinned: false,
   },
 ];

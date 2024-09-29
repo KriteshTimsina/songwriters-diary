@@ -2,10 +2,15 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {Editor, Home} from '../screens';
 import {StyleSheet} from 'react-native';
 import TabNavigation from './TabNavigation';
+import {Songs} from '../interfaces/songs';
 
 export type HomeStackParamsList = {
   TabNavigation: undefined;
-  Editor: undefined;
+  Editor:
+    | {
+        song: Songs;
+      }
+    | undefined;
 };
 
 const HomeStackNavigation = createStackNavigator<HomeStackParamsList>();
@@ -23,7 +28,7 @@ const HomeStack = () => {
       <HomeStackNavigation.Screen
         options={{
           headerShown: true,
-          title: 'Editor',
+          title: '',
         }}
         name="Editor"
         component={Editor}

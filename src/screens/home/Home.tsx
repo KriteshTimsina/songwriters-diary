@@ -1,4 +1,4 @@
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, Pressable, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {Wrapper} from '../../components/reuseables';
 import {Text} from '../../components/reuseables';
@@ -8,6 +8,7 @@ import {Colors} from '../../constants';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {HomeStackParamsList} from '../../navigation/HomeStack';
 import {useNavigation} from '@react-navigation/native';
+import {Songs} from '../../interfaces/songs';
 
 const Home = () => {
   const navigation = useNavigation<StackNavigationProp<HomeStackParamsList>>();
@@ -17,13 +18,15 @@ const Home = () => {
         showsVerticalScrollIndicator={false}
         data={data}
         keyExtractor={item => item.id.toString()}
-        renderItem={({item}) => (
-          <View style={[styles.card, {backgroundColor: item.color}]}>
+        renderItem={({item}: {item: Songs}) => (
+          <Pressable
+            onPress={() => navigation.navigate('Editor', {song: item})}
+            style={[styles.card, {backgroundColor: item.color}]}>
             <Text size="lg" weight="700">
               {item.title}
             </Text>
             <Text color={Colors.text.base}>{item.content}</Text>
-          </View>
+          </Pressable>
         )}
         numColumns={2}
       />
