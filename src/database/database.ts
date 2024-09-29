@@ -89,24 +89,24 @@ const updateNote = (id: number, newNote: SongInput): Promise<void> => {
 };
 
 // // Remove item from cart with Promise
-// const removeFromCart = (id: number | string): Promise<void> => {
-//   return new Promise((resolve, reject) => {
-//     db.transaction(txn => {
-//       txn.executeSql(
-//         `DELETE FROM cart WHERE id = ?`,
-//         [id],
-//         () => {
-//           console.log('Item removed from cart');
-//           resolve();
-//         },
-//         (error: any) => {
-//           console.log('Error: ', error);
-//           reject(error);
-//         },
-//       );
-//     });
-//   });
-// };
+const deleteNoteById = (id: number): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    db.transaction(txn => {
+      txn.executeSql(
+        `DELETE FROM note WHERE id = ?`,
+        [id],
+        () => {
+          console.log('Note removed from db');
+          resolve(true);
+        },
+        (error: any) => {
+          console.log('Error: ', error);
+          reject(false);
+        },
+      );
+    });
+  });
+};
 
 // // Get all cart items with Promise
 const getAllNotes = (): Promise<Songs[]> => {
@@ -184,6 +184,7 @@ export {
   getAllNotes,
   updateNote,
   getNoteById,
+  deleteNoteById,
   //   updateCart,
   //   removeFromCart,
   //   getCartItems,

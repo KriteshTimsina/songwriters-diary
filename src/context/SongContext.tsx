@@ -7,6 +7,7 @@ import {
   getAllNotes,
   getNoteById,
   updateNote,
+  deleteNoteById,
 } from '../database/database';
 import {Alert} from 'react-native';
 
@@ -64,12 +65,12 @@ const SongProvider = ({children}: {children: React.ReactNode}) => {
   //   setLoading(false);
   // };
 
-  // const onRemoveFromCart = (itemId: number | string) => {
-  //   setLoading(true);
-  //   sqliteRemoveFromCart(itemId);
-  //   getCartItems();
-  //   setLoading(false);
-  // };
+  const deleteNote = async (noteId: number) => {
+    setLoading(true);
+    await deleteNoteById(noteId);
+    loadSongNotes();
+    setLoading(false);
+  };
 
   return (
     <SongContext.Provider
@@ -77,6 +78,7 @@ const SongProvider = ({children}: {children: React.ReactNode}) => {
         notes,
         loadSongNotes,
         onSaveNote,
+        deleteNote,
       }}>
       {children}
     </SongContext.Provider>
