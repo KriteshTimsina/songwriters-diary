@@ -5,8 +5,12 @@ import {Text} from '../../components/reuseables';
 import CreateButton from '../../components/svgs/CreateButton';
 import {data} from '../../data';
 import {Colors} from '../../constants';
+import {StackScreenProps} from '@react-navigation/stack';
+import {HomeStackParamsList} from '../../navigation/HomeStack';
 
-const Home = () => {
+type HomeStackProps = StackScreenProps<HomeStackParamsList, 'Home'>;
+
+const Home = ({navigation}: HomeStackProps) => {
   return (
     <Wrapper>
       <FlatList
@@ -23,7 +27,10 @@ const Home = () => {
         )}
         numColumns={2}
       />
-      <CreateButton onPress={() => {}} style={styles.fab} />
+      <CreateButton
+        onPress={() => navigation.navigate('Editor')}
+        style={styles.fab}
+      />
     </Wrapper>
   );
 };
