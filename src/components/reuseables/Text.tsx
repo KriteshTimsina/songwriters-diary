@@ -18,8 +18,8 @@ const fontSizeMap: Record<Size, number> = {
   xs: 12,
   sm: 14,
   md: 16,
-  lg: 22,
-  xl: 36,
+  lg: 18,
+  xl: 22,
 };
 const fontWeightMap: Record<number, string> = {
   300: 'Roboto-Thin',

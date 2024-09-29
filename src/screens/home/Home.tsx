@@ -1,22 +1,44 @@
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {Wrapper} from '../../components/reuseables';
 import {Text} from '../../components/reuseables';
-import {FAB} from 'react-native-paper';
 import CreateButton from '../../components/svgs/CreateButton';
+import {data} from '../../data';
 import {Colors} from '../../constants';
 
 const Home = () => {
   return (
     <Wrapper>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={data}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({item}) => (
+          <View style={[styles.card, {backgroundColor: item.color}]}>
+            <Text size="lg" weight="700">
+              {item.title}
+            </Text>
+            <Text color={Colors.text.base}>{item.content}</Text>
+          </View>
+        )}
+        numColumns={2}
+      />
       <CreateButton onPress={() => {}} style={styles.fab} />
     </Wrapper>
   );
 };
 
-export default Home;
-
 const styles = StyleSheet.create({
+  flatListContent: {
+    // paddingBottom: 100, // To provide space for the FAB at the bottom
+  },
+  card: {
+    width: '48%', // To give spacing for two columns
+    padding: 10,
+    margin: 5,
+    borderRadius: 6,
+    alignSelf: 'flex-start', // Let each card expand based on its content
+  },
   fab: {
     position: 'absolute',
     margin: 16,
@@ -26,3 +48,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+export default Home;
