@@ -9,19 +9,21 @@ import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {HomeStackParamsList} from '../../navigation/HomeStack';
 import {useNavigation} from '@react-navigation/native';
 import {Songs} from '../../interfaces/songs';
+import useNotes from '../../hooks/useNotes';
 
 const Home = () => {
+  const {notes} = useNotes();
   const navigation = useNavigation<StackNavigationProp<HomeStackParamsList>>();
   return (
     <Wrapper>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={data}
+        data={notes}
         keyExtractor={item => item.id.toString()}
         renderItem={({item}: {item: Songs}) => (
           <Pressable
             onPress={() => navigation.navigate('Editor', {song: item})}
-            style={[styles.card, {backgroundColor: item.color}]}>
+            style={[styles.card, {backgroundColor: item.color ?? '#D9E8FC'}]}>
             <Text size="lg" weight="700">
               {item.title}
             </Text>

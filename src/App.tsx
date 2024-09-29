@@ -15,11 +15,14 @@ import {Home, Todo} from './screens';
 import {TabbarTop} from './navigation';
 import HomeStack from './navigation/HomeStack';
 import TabNavigation from './navigation/TabNavigation';
+import SongProvider from './context/SongContext';
 
 export default function App() {
   return (
     <NavigationContainer>
-      <HomeStack />
+      <SongProvider>
+        <HomeStack />
+      </SongProvider>
     </NavigationContainer>
   );
 }

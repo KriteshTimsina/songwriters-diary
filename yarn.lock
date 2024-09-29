@@ -2753,6 +2753,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-native-sqlite-storage@npm:^6.0.5":
+  version: 6.0.5
+  resolution: "@types/react-native-sqlite-storage@npm:6.0.5"
+  checksum: 192d4c3e2d93ea59f59387b8eb8d0aca3da32acca441aa5f84b2f4d919fc52aaa088ab5eb319ceec8471e58107d7463c56c733bfe5ff58915ac03b45313b6450
+  languageName: node
+  linkType: hard
+
 "@types/react-native-vector-icons@npm:^6.4.18":
   version: 6.4.18
   resolution: "@types/react-native-vector-icons@npm:6.4.18"
@@ -8231,6 +8238,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-sqlite-storage@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "react-native-sqlite-storage@npm:6.0.1"
+  peerDependencies:
+    react-native: ">=0.14.0"
+  checksum: 79bd454682beb22cdfb5a234b9d52b454d0451dccf03a3c15b70b9c331b32cf0066703652b0d23707bda9b9b4c8063e92d31084171af3ea647855b5d727746e0
+  languageName: node
+  linkType: hard
+
 "react-native-svg@npm:^15.7.1":
   version: 15.7.1
   resolution: "react-native-svg@npm:15.7.1"
@@ -8978,6 +8994,7 @@ __metadata:
     "@react-navigation/native": ^6.1.18
     "@react-navigation/stack": ^6.4.1
     "@types/react": ^18.2.6
+    "@types/react-native-sqlite-storage": ^6.0.5
     "@types/react-native-vector-icons": ^6.4.18
     "@types/react-test-renderer": ^18.0.0
     babel-jest: ^29.6.3
@@ -8993,6 +9010,7 @@ __metadata:
     react-native-pell-rich-editor: ^1.9.0
     react-native-safe-area-context: ^4.11.0
     react-native-screens: ^3.34.0
+    react-native-sqlite-storage: ^6.0.1
     react-native-svg: ^15.7.1
     react-native-tab-view: ^3.5.2
     react-native-vector-icons: ^10.2.0
