@@ -14,7 +14,15 @@ type InputProps = {
 } & TextInputProps;
 
 const TextInput = ({value, style, ...props}: InputProps) => {
-  return <Input {...props} value={value} style={[styles.input, style]} />;
+  return (
+    <Input
+      selectionColor={Colors.primary.main}
+      selectionHandleColor={Colors.danger.main}
+      {...props}
+      value={value}
+      style={[styles.input, style]}
+    />
+  );
 };
 
 export default TextInput;
@@ -22,8 +30,5 @@ export default TextInput;
 const styles = StyleSheet.create({
   input: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 22,
-    color: Colors.text.base,
-    backgroundColor: 'transparent',
   },
 });
