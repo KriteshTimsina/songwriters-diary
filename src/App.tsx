@@ -1,6 +1,6 @@
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import {Animated, TouchableOpacity, View} from 'react-native';
+import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Text} from 'react-native-paper';
 import {Feather} from './components/icons';
 
@@ -20,7 +20,7 @@ export default function App() {
 function HomeScreen() {
   return (
     <View>
-      <Text>Hello World</Text>
+      <Text style={styles.text}>Hello World</Text>
     </View>
   );
 }
@@ -89,3 +89,10 @@ function MyTabBar({state, descriptors, navigation, position}) {
     </View>
   );
 }
+
+export const styles = StyleSheet.create({
+  text: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 50,
+  },
+});
