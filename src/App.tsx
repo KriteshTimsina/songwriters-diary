@@ -1,4 +1,7 @@
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabBarProps,
+} from '@react-navigation/material-top-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Text} from 'react-native-paper';
@@ -6,6 +9,7 @@ import {Feather} from './components/icons';
 import {Image} from 'react-native-svg';
 import Onboarding from './components/svgs/Onboarding';
 import CreateButton from './components/svgs/CreateButton';
+import {List, Songs} from './components/svgs/TabBarIcons';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -22,7 +26,7 @@ export default function App() {
 
 function HomeScreen() {
   return (
-    <View>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <Text style={styles.text}>Hello World</Text>
       <CreateButton />
     </View>
@@ -36,9 +40,22 @@ function SettingsScreen() {
   );
 }
 
-function MyTabBar({state, descriptors, navigation, position}) {
+function MyTabBar({
+  state,
+  descriptors,
+  navigation,
+  position,
+}: MaterialTopTabBarProps) {
   return (
-    <View style={{flexDirection: 'row'}}>
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        alignSelf: 'center',
+        backgroundColor: 'white',
+      }}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const label =
@@ -84,9 +101,16 @@ function MyTabBar({state, descriptors, navigation, position}) {
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{flex: 1}}>
-            <Feather size={30} name="home" />
-            <Animated.Text style={{opacity}}>{label}</Animated.Text>
+            style={{
+              padding: 5,
+              margin: 10,
+              alignSelf: 'center',
+            }}>
+            {label === 'Home' ? (
+              <Songs isFocused={isFocused} />
+            ) : (
+              <List isFocused={isFocused} />
+            )}
           </TouchableOpacity>
         );
       })}
