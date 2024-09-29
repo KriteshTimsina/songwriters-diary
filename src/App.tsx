@@ -5,6 +5,7 @@ import {Text} from 'react-native-paper';
 import {Feather} from './components/icons';
 import {Image} from 'react-native-svg';
 import Onboarding from './components/svgs/Onboarding';
+import CreateButton from './components/svgs/CreateButton';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -23,7 +24,7 @@ function HomeScreen() {
   return (
     <View>
       <Text style={styles.text}>Hello World</Text>
-      <Onboarding />
+      <CreateButton />
     </View>
   );
 }
