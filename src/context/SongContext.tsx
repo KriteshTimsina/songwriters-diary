@@ -42,7 +42,6 @@ const SongProvider = ({children}: {children: React.ReactNode}) => {
   // };
 
   const onSaveNote = async (note: Songs) => {
-    console.log(note, 'xa ta id  ');
     try {
       if (!note.id) {
         const savedNote = await saveNote(note);

@@ -1,5 +1,11 @@
-import {FlatList, Pressable, StyleSheet, View} from 'react-native';
-import React from 'react';
+import {
+  FlatList,
+  Pressable,
+  RefreshControl,
+  StyleSheet,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {Wrapper} from '../../components/reuseables';
 import {Text} from '../../components/reuseables';
 import CreateButton from '../../components/svgs/CreateButton';
@@ -7,16 +13,39 @@ import {data} from '../../data';
 import {Colors} from '../../constants';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {HomeStackParamsList} from '../../navigation/HomeStack';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {Songs} from '../../interfaces/songs';
 import useNotes from '../../hooks/useNotes';
 
 const Home = () => {
-  const {notes} = useNotes();
+  const {notes, loadSongNotes} = useNotes();
   const navigation = useNavigation<StackNavigationProp<HomeStackParamsList>>();
+  const [refreshing, setRefreshing] = useState(false);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      getNotes();
+    }
+  }, [isFocused]);
+
+  const getNotes = () => {
+    setRefreshing(true);
+    loadSongNotes();
+    setRefreshing(false);
+  };
+
   return (
     <Wrapper>
       <FlatList
+        refreshControl={
+          <RefreshControl
+            enabled={true}
+            refreshing={refreshing}
+            onRefresh={getNotes}
+          />
+        }
+        refreshing={refreshing}
         showsVerticalScrollIndicator={false}
         data={notes}
         keyExtractor={item => item.id.toString()}
