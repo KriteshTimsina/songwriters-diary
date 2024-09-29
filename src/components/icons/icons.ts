@@ -1,0 +1,21 @@
+import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome6Icon from 'react-native-vector-icons/FontAwesome6';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import MCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MIcon from 'react-native-vector-icons/MaterialIcons';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
+import FeatherIcon from 'react-native-vector-icons/Feather';
+import IoniIcons from 'react-native-vector-icons/Ionicons';
+import OctiIcons from 'react-native-vector-icons/Octicons';
+
+export const Evil = EvilIconsIcon;
+export const FontAwesome5 = FontAwesome5Icon;
+export const FontAwesome6 = FontAwesome6Icon;
+export const AntDesign = AntDesignIcon;
+export const MaterialCommunity = MCommunityIcon;
+export const Material = MIcon;
+export const Entypo = EntypoIcon;
+export const Feather = FeatherIcon;
+export const Ioni = IoniIcons;
+export const Octi = OctiIcons;

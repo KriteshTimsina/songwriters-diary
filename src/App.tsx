@@ -2,6 +2,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {NavigationContainer} from '@react-navigation/native';
 import {Animated, TouchableOpacity, View} from 'react-native';
 import {Text} from 'react-native-paper';
+import {Feather} from './components/icons';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -72,6 +73,7 @@ function MyTabBar({state, descriptors, navigation, position}) {
 
         return (
           <TouchableOpacity
+            key={label}
             accessibilityRole="button"
             accessibilityState={isFocused ? {selected: true} : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
@@ -79,6 +81,7 @@ function MyTabBar({state, descriptors, navigation, position}) {
             onPress={onPress}
             onLongPress={onLongPress}
             style={{flex: 1}}>
+            <Feather size={30} name="home" />
             <Animated.Text style={{opacity}}>{label}</Animated.Text>
           </TouchableOpacity>
         );
