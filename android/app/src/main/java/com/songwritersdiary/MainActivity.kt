@@ -15,7 +15,8 @@ class MainActivity : ReactActivity() {
   override fun getMainComponentName(): String = "songwritersdiary"
 
    override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(null)
+    setTheme(R.style.AppTheme); 
+    super.onCreate(null);
   }
 
   /**

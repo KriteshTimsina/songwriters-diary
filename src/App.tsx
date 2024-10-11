@@ -27,9 +27,10 @@ import {
   requestMultiple,
   RESULTS,
 } from 'react-native-permissions';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 
 export default function App() {
+  // const [loading,setLoading] = useState(true)
   useEffect(() => {
     requestAllPermissions();
   }, []);
@@ -37,12 +38,26 @@ export default function App() {
   const requestAllPermissions = async () => {
     if (Platform.OS === 'android') {
       try {
-        const permissionResults = await requestMultiple([
-          PERMISSIONS.ANDROID.RECORD_AUDIO,
+        const micGranted = await check(PERMISSIONS.ANDROID.RECORD_AUDIO);
+        const storageGranted = await check(
           PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-          PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-        ]);
-        console.log(permissionResults, 'Permissions');
+        );
+        const storageReadGranted = await check(
+          PERMISSIONS.ANDROID.READ_MEDIA_AUDIO,
+        );
+
+        if (
+          micGranted !== 'granted' ||
+          storageGranted !== 'granted' ||
+          storageReadGranted !== 'granted'
+        ) {
+          const x = await requestMultiple([
+            PERMISSIONS.ANDROID.RECORD_AUDIO,
+            PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+            PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+          ]);
+          console.log(x, '<MIU');
+        }
       } catch (error) {
         console.error('Permission request error:', error);
       }
@@ -50,6 +65,17 @@ export default function App() {
       Alert.alert('Permissions are for Android only.');
     }
   };
+
+  // useEffect(()=>{
+  //   const timeout = setTimeout(()=>{
+  //     setLoading(false)
+  //   },5000)
+  //   return () => clearTimeout(timeout)
+  // })
+
+  // if(loading){
+  //   return <SplashScreen/>
+  // }
 
   return (
     <NavigationContainer>
