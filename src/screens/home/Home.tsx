@@ -58,12 +58,14 @@ const Home = () => {
 
   return (
     <Wrapper>
-      <Searchbar
-        onClear={onClear}
-        searchText={searchText}
-        onChangeText={onChangeText}
-        onSearch={() => {}}
-      />
+      {notes.length > 0 && (
+        <Searchbar
+          onClear={onClear}
+          onSearch={getNotes}
+          searchText={searchText}
+          onChangeText={onChangeText}
+        />
+      )}
       <FlatList
         refreshControl={
           <RefreshControl
