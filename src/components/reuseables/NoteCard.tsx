@@ -53,6 +53,7 @@ const NoteCard = ({item}: {item: Songs}) => {
         {showOptions && (
           <Portal>
             <Modal
+              key={item.id}
               visible={showOptions}
               onDismiss={onDismiss}
               contentContainerStyle={styles.modalContainer}>

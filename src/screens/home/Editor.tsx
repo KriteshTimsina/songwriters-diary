@@ -19,14 +19,10 @@ import {HomeStackParamsList} from '../../navigation/HomeStack';
 import {Wrapper, TextInput} from '../../components/reuseables';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {SongInput, Songs} from '../../interfaces/songs';
-import {saveNote} from '../../database/database';
-import {Button} from 'react-native-paper';
 import useNotes from '../../hooks/useNotes';
-import {FontAwesome5} from '../../components/icons';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import Recording from '../../components/reuseables/Recording';
 import useKeyboardVisible from '../../hooks/useKeyboardVisible';
-import NoteControls from '../../components/reuseables/NoteControls';
+import {NoteControls, Recording} from '../../components/reuseables';
 
 type EditorScreenProps = StackScreenProps<HomeStackParamsList, 'Editor'>;
 
@@ -47,11 +43,9 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playTime, setPlayTime] = useState('00:00:00');
   const [duration, setDuration] = useState('00:00:00');
-  const [recordedUri, setRecordedUri] = useState(null);
+  const [recordedUri, setRecordedUri] = useState<string | null>(null);
 
   const audioRecorderPlayer = useRef(new AudioRecorderPlayer());
-
-  console.log(recordedUri, 'HEHE');
 
   useEffect(() => {
     return () => {
@@ -65,7 +59,6 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
   }, [isRecording, isPlaying]);
 
   const onChange = async (key: keyof SongInput, value: string) => {
-    if (value.trim() === '') return;
     setNote((prev: SongInput) => ({
       ...prev,
       [key]: value,
@@ -152,7 +145,6 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
       const msg = await audioRecorderPlayer.current.startPlayer(recordedUri);
       audioRecorderPlayer.current.addPlayBackListener(e => {
         if (e.currentPosition === e.duration) {
-          console.log('finished');
           audioRecorderPlayer.current.stopPlayer();
           setIsPlaying(false);
         }
@@ -231,17 +223,17 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
         />
 
         <View style={styles.recordings}>
-          {/* {[1, 2].map(record => ( */}
-          <Recording
-            onStartPlay={onStartPlay}
-            onStopPlay={onStopPlay}
-            isPlaying={isPlaying}
-            // key={record}
-            duration={duration}
-            playTime={playTime}
-            records={recordedUri}
-          />
-          {/* ))} */}
+          {recordedUri && (
+            <Recording
+              onStartPlay={onStartPlay}
+              onStopPlay={onStopPlay}
+              isPlaying={isPlaying}
+              // key={record}
+              duration={duration}
+              playTime={playTime}
+              records={recordedUri}
+            />
+          )}
         </View>
       </KeyboardAwareScrollView>
 
