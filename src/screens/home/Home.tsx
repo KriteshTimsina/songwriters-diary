@@ -5,8 +5,8 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {NoteCard, Wrapper} from '../../components/reuseables';
+import React, {useCallback, useEffect, useState} from 'react';
+import {NoteCard, TextInput, Wrapper} from '../../components/reuseables';
 import {Text} from '../../components/reuseables';
 import CreateButton from '../../components/svgs/CreateButton';
 import {data} from '../../data';
@@ -17,12 +17,14 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {Songs} from '../../interfaces/songs';
 import useNotes from '../../hooks/useNotes';
 import EmptyNotes from '../../components/svgs/EmptyNotes';
+import Searchbar from '../../components/reuseables/Searchbar';
 
 const Home = () => {
   const {notes, loadSongNotes} = useNotes();
   const navigation = useNavigation<StackNavigationProp<HomeStackParamsList>>();
   const [refreshing, setRefreshing] = useState(false);
   const isFocused = useIsFocused();
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     if (isFocused) {
@@ -36,8 +38,20 @@ const Home = () => {
     setRefreshing(false);
   };
 
+  const onChangeText = useCallback((text: string) => {
+    setSearchText(text);
+  }, []);
+
+  console.log('first', searchText);
+
   return (
     <Wrapper>
+      <Searchbar
+        onClear={() => {}}
+        searchText={searchText}
+        onChangeText={onChangeText}
+        onSearch={() => {}}
+      />
       <FlatList
         refreshControl={
           <RefreshControl

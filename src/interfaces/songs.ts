@@ -30,3 +30,10 @@ export type NoteControlsProps = {
   onStopRecord: () => void;
   isRecording: boolean;
 };
+
+export type SearchbarProps = {
+  onSearch: (text: string) => void;
+  onClear: () => void;
+  searchText: string;
+  onChangeText: (text: string) => void;
+};
