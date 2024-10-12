@@ -5,11 +5,10 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {NoteCard, TextInput, Wrapper} from '../../components/reuseables';
 import {Text} from '../../components/reuseables';
 import CreateButton from '../../components/svgs/CreateButton';
-import {data} from '../../data';
 import {Colors} from '../../constants';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {HomeStackParamsList} from '../../navigation/HomeStack';
@@ -42,12 +41,25 @@ const Home = () => {
     setSearchText(text);
   }, []);
 
-  console.log('first', searchText);
+  const memoizedNotes = useMemo(() => {
+    if (!searchText) return notes;
+    const filteredNotes = notes.filter(
+      item =>
+        item.title.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.content.toLowerCase().includes(searchText.toLowerCase()),
+    );
+    return filteredNotes;
+  }, [searchText, notes]);
+
+  const onClear = () => {
+    setSearchText('');
+    getNotes();
+  };
 
   return (
     <Wrapper>
       <Searchbar
-        onClear={() => {}}
+        onClear={onClear}
         searchText={searchText}
         onChangeText={onChangeText}
         onSearch={() => {}}
@@ -73,7 +85,7 @@ const Home = () => {
         )}
         refreshing={refreshing}
         showsVerticalScrollIndicator={false}
-        data={notes}
+        data={memoizedNotes || notes}
         keyExtractor={item => item.id.toString()}
         renderItem={({item}) => <NoteCard item={item} />}
         numColumns={2}

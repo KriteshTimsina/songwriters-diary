@@ -19,7 +19,16 @@ const Searchbar = ({
         value={searchText}
         placeholder="Search for songs..."
         onChangeText={text => onChangeText(text)}
+        placeholderTextColor={Colors.text.base}
       />
+      {searchText.length > 0 && (
+        <Ioni
+          name="close-outline"
+          size={25}
+          color={Colors.text.base}
+          onPress={onClear}
+        />
+      )}
     </View>
   );
 };
