@@ -7,15 +7,28 @@ import {Ioni, Octi} from '../icons';
 import Waveform from '../svgs/WaveForm';
 import CText from './Text';
 
-const Recording = ({records}: RecordOptions) => {
+const Recording = ({
+  records,
+  onStartPlay,
+  onStopPlay,
+  isPlaying,
+  playTime,
+  duration,
+}: RecordOptions) => {
   return (
     <View style={styles.container}>
       <View style={styles.playbackContainer}>
-        <Pressable style={styles.playContainer}>
-          <Ioni color={Colors.primary.main} name="play" size={20} />
-        </Pressable>
+        {isPlaying ? (
+          <Pressable onPress={onStopPlay} style={styles.playContainer}>
+            <Ioni color={Colors.primary.main} name="pause" size={20} />
+          </Pressable>
+        ) : (
+          <Pressable onPress={onStartPlay} style={styles.playContainer}>
+            <Ioni color={Colors.primary.main} name="play-sharp" size={20} />
+          </Pressable>
+        )}
         <CText color={Colors.primary.main} weight="600" size="sm">
-          1:22
+          {isPlaying ? `${playTime}` : `${duration}`}
         </CText>
       </View>
       <View style={styles.waveForm}>

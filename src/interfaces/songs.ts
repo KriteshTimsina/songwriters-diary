@@ -17,8 +17,16 @@ export type SongContextProps = {
 
 export type RecordOptions = {
   records: any;
+  onStartPlay: () => void;
+  onStopPlay: () => void;
+  isPlaying: boolean;
+  playTime: string;
+  duration: string;
 };
 
 export type NoteControlsProps = {
   saveNote: () => void;
+  onStartRecord: () => void;
+  onStopRecord: () => void;
+  isRecording: boolean;
 };

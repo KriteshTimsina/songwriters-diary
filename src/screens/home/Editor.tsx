@@ -1,8 +1,10 @@
 import {
+  Alert,
   Dimensions,
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
+  PermissionsAndroid,
   Platform,
   Pressable,
   StyleSheet,
@@ -11,7 +13,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {HomeStackParamsList} from '../../navigation/HomeStack';
 import {Wrapper, TextInput} from '../../components/reuseables';
@@ -40,90 +42,157 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
   const {onSaveNote} = useNotes();
   const isKeyboardVisible = useKeyboardVisible();
 
-  const audioRecorderPlayer = new AudioRecorderPlayer();
-  const [audioPath, setAudioPath] = useState<string | null>(null);
-  const [state, setState] = useState({isRecording: false, isPlaying: false});
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordTime, setRecordTime] = useState('00:00:00');
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [playTime, setPlayTime] = useState('00:00:00');
+  const [duration, setDuration] = useState('00:00:00');
+  const [recordedUri, setRecordedUri] = useState(null);
 
-  ////data/user/0/com.songwritersdiary/cache/sound.mp4
+  const audioRecorderPlayer = useRef(new AudioRecorderPlayer());
 
-  console.log(audioPath, '|WHA');
-  const onStartRecord = async () => {
-    try {
-      const result = await audioRecorderPlayer.startRecorder();
-      console.log('Recording started, file saved at:', result); // Check this log
-      audioRecorderPlayer.addRecordBackListener(cb => {
-        console.log(cb, 'K XA ');
-      });
-      setAudioPath(result); // Store the path of the recording
-      setState({...state, isRecording: true});
-    } catch (error) {
-      console.error('Error while recording:', error);
-    }
-  };
+  console.log(recordedUri, 'HEHE');
 
-  // Stop Recording
-  const onStopRecord = async () => {
-    try {
-      const result = await audioRecorderPlayer.stopRecorder();
-      audioRecorderPlayer.removeRecordBackListener(); // Ensure we remove the listener
-      console.log(result, 'STOPPD');
-      setState({...state, isRecording: false});
-    } catch (error) {
-      console.error('Error while stopping the recorder:', error);
-    }
-  };
+  useEffect(() => {
+    return () => {
+      if (isRecording) {
+        audioRecorderPlayer.current.stopRecorder();
+      }
+      if (isPlaying) {
+        audioRecorderPlayer.current.stopPlayer();
+      }
+    };
+  }, [isRecording, isPlaying]);
 
-  const onStartPlay = async () => {
-    try {
-      // Stop the player if it's already running
-      await audioRecorderPlayer.stopPlayer();
-      audioRecorderPlayer.removePlayBackListener();
-
-      console.log('onStartPlay');
-      const msg = await audioRecorderPlayer.startPlayer(audioPath);
-      console.log(msg, 'Playing from:', audioPath);
-
-      audioRecorderPlayer.addPlayBackListener(e => {
-        console.log('Playing audio', e);
-        return;
-      });
-    } catch (error) {
-      console.error('Error while playing audio:', error);
-    }
-  };
-
-  // Stop Playing Audio
-  const onStopPlay = async () => {
-    try {
-      await audioRecorderPlayer.stopPlayer();
-      audioRecorderPlayer.removePlayBackListener();
-      setState({...state, isPlaying: false});
-      console.log('Stopped playing');
-    } catch (error) {
-      console.error('Error while stopping the player:', error);
-    }
-  };
   const onChange = async (key: keyof SongInput, value: string) => {
     if (value.trim() === '') return;
     setNote((prev: SongInput) => ({
       ...prev,
       [key]: value,
     }));
-    // setTimeout(async () => {
-    //   const {title, content} = note;
-    //   console.log(title, content, 'NOTE');
-    //   if (title && content) {
-    //     const savedNote = await saveNote(note);
-    //     console.log(savedNote, 'WHAT');
-    //     if (savedNote) {
-    //       ToastAndroid.showWithGravity(
-    //         'Saved',
-    //         ToastAndroid.SHORT,
-    //         ToastAndroid.BOTTOM,
-    //       );
-    //     }
-    //   }
-    // }, 3000);
+  };
+
+  const requestPermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const grants = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        ]);
+
+        if (
+          grants['android.permission.WRITE_EXTERNAL_STORAGE'] ===
+            PermissionsAndroid.RESULTS.GRANTED &&
+          grants['android.permission.RECORD_AUDIO'] ===
+            PermissionsAndroid.RESULTS.GRANTED
+        ) {
+          console.log('Permissions granted');
+          return true;
+        } else {
+          console.log('All required permissions not granted');
+          return false;
+        }
+      } catch (err) {
+        console.warn(err);
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const onStartRecord = async () => {
+    const hasPermission = await requestPermission();
+    if (!hasPermission) {
+      Alert.alert(
+        'Permission Error',
+        'Please grant the required permissions to record audio.',
+      );
+      return;
+    }
+
+    try {
+      const uri = await audioRecorderPlayer.current.startRecorder();
+      audioRecorderPlayer.current.addRecordBackListener(e => {
+        setRecordTime(
+          audioRecorderPlayer.current.mmssss(Math.floor(e.currentPosition)),
+        );
+      });
+      setIsRecording(true);
+      setRecordedUri(uri);
+      console.log('Recording started', uri);
+    } catch (error) {
+      console.error('Failed to start recording', error);
+      Alert.alert('Error', 'Failed to start recording. Please try again.');
+    }
+  };
+
+  const onStopRecord = async () => {
+    if (!isRecording) return;
+
+    try {
+      const result = await audioRecorderPlayer.current.stopRecorder();
+      audioRecorderPlayer.current.removeRecordBackListener();
+      setIsRecording(false);
+      setRecordTime('00:00:00');
+      console.log('Recording stopped', result);
+    } catch (error) {
+      console.error('Failed to stop recording', error);
+      Alert.alert('Error', 'Failed to stop recording. Please try again.');
+    }
+  };
+
+  const onStartPlay = async () => {
+    if (!recordedUri) {
+      Alert.alert('Error', 'No recorded audio to play.');
+      return;
+    }
+
+    try {
+      console.log('onStartPlay');
+      const msg = await audioRecorderPlayer.current.startPlayer(recordedUri);
+      audioRecorderPlayer.current.addPlayBackListener(e => {
+        if (e.currentPosition === e.duration) {
+          console.log('finished');
+          audioRecorderPlayer.current.stopPlayer();
+          setIsPlaying(false);
+        }
+        setPlayTime(
+          audioRecorderPlayer.current.mmssss(Math.floor(e.currentPosition)),
+        );
+        setDuration(audioRecorderPlayer.current.mmssss(Math.floor(e.duration)));
+      });
+      setIsPlaying(true);
+      console.log(msg);
+    } catch (error) {
+      console.error('Failed to start playback', error);
+      Alert.alert(
+        'Error',
+        'Failed to play the recorded audio. Please try again.',
+      );
+    }
+  };
+
+  const onPausePlay = async () => {
+    try {
+      await audioRecorderPlayer.current.pausePlayer();
+      setIsPlaying(false);
+    } catch (error) {
+      console.error('Failed to pause playback', error);
+      Alert.alert('Error', 'Failed to pause the audio. Please try again.');
+    }
+  };
+
+  const onStopPlay = async () => {
+    try {
+      console.log('onStopPlay');
+      await audioRecorderPlayer.current.stopPlayer();
+      audioRecorderPlayer.current.removePlayBackListener();
+      setIsPlaying(false);
+      setPlayTime('00:00:00');
+    } catch (error) {
+      console.error('Failed to stop playback', error);
+      Alert.alert('Error', 'Failed to stop the audio. Please try again.');
+    }
   };
 
   const saveNote = async () => {
@@ -161,27 +230,29 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
           value={note?.content}
         />
 
-        <FlatList
-          keyExtractor={(item, index) => index.toString()}
-          data={[1]}
-          renderItem={({item}) => <Recording records={item} />}
-          contentContainerStyle={{gap: 10}}
-        />
-        {/* <Button onPress ={onStartPlay}>Play</Button> */}
+        <View style={styles.recordings}>
+          {/* {[1, 2].map(record => ( */}
+          <Recording
+            onStartPlay={onStartPlay}
+            onStopPlay={onStopPlay}
+            isPlaying={isPlaying}
+            // key={record}
+            duration={duration}
+            playTime={playTime}
+            records={recordedUri}
+          />
+          {/* ))} */}
+        </View>
       </KeyboardAwareScrollView>
 
-      {isKeyboardVisible && <NoteControls saveNote={saveNote} />}
-      {/* <View>
-      {state.isRecording ? (
-        <Pressable onPress={onStopRecord}>
-          <FontAwesome5 size={25} name="stop" />
-        </Pressable>
-         ) : ( 
-        <Button onPress={onStartRecord}>
-          <FontAwesome5 size={25} name="microphone" />
-        </Button>
-        )} 
-      </View> */}
+      {isKeyboardVisible && (
+        <NoteControls
+          isRecording={isRecording}
+          onStopRecord={onStopRecord}
+          onStartRecord={onStartRecord}
+          saveNote={saveNote}
+        />
+      )}
     </Wrapper>
   );
 };
@@ -199,5 +270,8 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     // backgroundColor: 'pink',
     minHeight: contentHeight,
+  },
+  recordings: {
+    gap: 10,
   },
 });
