@@ -1,4 +1,4 @@
-import {Alert, Platform} from 'react-native';
+import {Platform} from 'react-native';
 import {check, PERMISSIONS, requestMultiple} from 'react-native-permissions';
 
 export const requestAllPermissions = async () => {
@@ -17,17 +17,16 @@ export const requestAllPermissions = async () => {
         storageGranted !== 'granted' ||
         storageReadGranted !== 'granted'
       ) {
-        const x = await requestMultiple([
+        await requestMultiple([
           PERMISSIONS.ANDROID.RECORD_AUDIO,
           PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
           PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
         ]);
-        console.log(x, '<MIU');
       }
     } catch (error) {
       console.error('Permission request error:', error);
     }
   } else {
-    Alert.alert('Permissions are for Android only.');
+    //handle permissison for ios
   }
 };
