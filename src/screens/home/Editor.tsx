@@ -23,6 +23,8 @@ import useNotes from '../../hooks/useNotes';
 import {FontAwesome5} from '../../components/icons';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import Recording from '../../components/reuseables/Recording';
+import useKeyboardVisible from '../../hooks/useKeyboardVisible';
+import NoteControls from '../../components/reuseables/NoteControls';
 
 type EditorScreenProps = StackScreenProps<HomeStackParamsList, 'Editor'>;
 
@@ -36,10 +38,12 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
   const {song} = route.params || {};
   const [note, setNote] = useState<SongInput>(song ?? initialValue);
   const {onSaveNote} = useNotes();
+  const isKeyboardVisible = useKeyboardVisible();
 
   const audioRecorderPlayer = new AudioRecorderPlayer();
   const [audioPath, setAudioPath] = useState<string | null>(null);
   const [state, setState] = useState({isRecording: false, isPlaying: false});
+
   ////data/user/0/com.songwritersdiary/cache/sound.mp4
 
   console.log(audioPath, '|WHA');
@@ -159,14 +163,14 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
 
         <FlatList
           keyExtractor={(item, index) => index.toString()}
-          data={[1, 2, 3]}
+          data={[1]}
           renderItem={({item}) => <Recording records={item} />}
           contentContainerStyle={{gap: 10}}
         />
-        {/* <Button onPress={onStartPlay}>Play</Button> */}
+        {/* <Button onPress ={onStartPlay}>Play</Button> */}
       </KeyboardAwareScrollView>
 
-      <Button onPress={saveNote}>Save</Button>
+      {isKeyboardVisible && <NoteControls saveNote={saveNote} />}
       {/* <View>
       {state.isRecording ? (
         <Pressable onPress={onStopRecord}>
@@ -193,7 +197,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     flex: 1,
     textAlignVertical: 'top',
-    backgroundColor: 'pink',
+    // backgroundColor: 'pink',
     minHeight: contentHeight,
   },
 });

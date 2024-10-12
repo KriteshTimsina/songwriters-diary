@@ -5,13 +5,19 @@ import {Text} from '.';
 import {Colors} from '../../constants';
 import {Ioni, Octi} from '../icons';
 import Waveform from '../svgs/WaveForm';
+import CText from './Text';
 
 const Recording = ({records}: RecordOptions) => {
   return (
     <View style={styles.container}>
-      <Pressable style={styles.playContainer}>
-        <Ioni name="play-sharp" size={20} />
-      </Pressable>
+      <View style={styles.playbackContainer}>
+        <Pressable style={styles.playContainer}>
+          <Ioni color={Colors.primary.main} name="play" size={20} />
+        </Pressable>
+        <CText color={Colors.primary.main} weight="600" size="sm">
+          1:22
+        </CText>
+      </View>
       <View style={styles.waveForm}>
         <Waveform strokeColor={Colors.primary.main} />
         <Waveform strokeColor={Colors.primary.main} />
@@ -32,6 +38,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
+  },
+  playbackContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
   playContainer: {
     width: 30,

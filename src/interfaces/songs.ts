@@ -18,3 +18,7 @@ export type SongContextProps = {
 export type RecordOptions = {
   records: any;
 };
+
+export type NoteControlsProps = {
+  saveNote: () => void;
+};
