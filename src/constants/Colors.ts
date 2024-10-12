@@ -1,7 +1,7 @@
 const Colors = {
   primary: {
     main: '#F9751C',
-    light: 'rgba(16,196,105,0.3)',
+    light: '#FFE5A4',
     textLight: 'rgba(255,255,255,0.7)',
   },
   danger: {

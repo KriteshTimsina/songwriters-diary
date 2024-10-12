@@ -1,4 +1,6 @@
 import {
+  Dimensions,
+  FlatList,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -20,6 +22,7 @@ import {Button} from 'react-native-paper';
 import useNotes from '../../hooks/useNotes';
 import {FontAwesome5} from '../../components/icons';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import Recording from '../../components/reuseables/Recording';
 
 type EditorScreenProps = StackScreenProps<HomeStackParamsList, 'Editor'>;
 
@@ -27,6 +30,7 @@ const initialValue = {
   title: '',
   content: '',
 };
+const contentHeight = Dimensions.get('screen').height / 2;
 
 const Editor = ({navigation, route}: EditorScreenProps) => {
   const {song} = route.params || {};
@@ -152,21 +156,28 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
           style={styles.content}
           value={note?.content}
         />
-        <Button onPress={onStartPlay}>Play</Button>
+
+        <FlatList
+          keyExtractor={(item, index) => index.toString()}
+          data={[1, 2, 3]}
+          renderItem={({item}) => <Recording records={item} />}
+          contentContainerStyle={{gap: 10}}
+        />
+        {/* <Button onPress={onStartPlay}>Play</Button> */}
       </KeyboardAwareScrollView>
 
-      <View>
-        <Button onPress={saveNote}>Save</Button>
-        {/* {state.isRecording ? ( */}
+      <Button onPress={saveNote}>Save</Button>
+      {/* <View>
+      {state.isRecording ? (
         <Pressable onPress={onStopRecord}>
           <FontAwesome5 size={25} name="stop" />
         </Pressable>
-        {/* ) : ( */}
+         ) : ( 
         <Button onPress={onStartRecord}>
           <FontAwesome5 size={25} name="microphone" />
         </Button>
-        {/* )} */}
-      </View>
+        )} 
+      </View> */}
     </Wrapper>
   );
 };
@@ -182,5 +193,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     flex: 1,
     textAlignVertical: 'top',
+    backgroundColor: 'pink',
+    minHeight: contentHeight,
   },
 });

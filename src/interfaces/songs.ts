@@ -14,3 +14,7 @@ export type SongContextProps = {
   onSaveNote: (note: SongInput) => Promise<Songs | null>;
   deleteNote: (id: number) => Promise<boolean>;
 };
+
+export type RecordOptions = {
+  records: any;
+};
