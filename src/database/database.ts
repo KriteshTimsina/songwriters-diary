@@ -15,7 +15,9 @@ const createSongTable = (): Promise<void> => {
         `CREATE TABLE IF NOT EXISTS note(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           title TEXT,
-          content TEXT
+          content TEXT,
+          clip TEXT, 
+          duration TEXT
         )`,
         [],
         () => {
@@ -36,8 +38,13 @@ const saveNote = (songInput: SongInput): Promise<Songs | null> => {
   return new Promise((resolve, reject) => {
     db.transaction(txn => {
       txn.executeSql(
-        `INSERT INTO note (title, content) VALUES (?, ?)`,
-        [songInput.title, songInput.content],
+        `INSERT INTO note (title, content, clip, duration) VALUES (?, ?, ?, ?)`,
+        [
+          songInput.title,
+          songInput.content,
+          songInput.clip,
+          songInput.duration,
+        ],
         (_, result) => {
           console.log('Note saved');
           // Get the ID of the last inserted note

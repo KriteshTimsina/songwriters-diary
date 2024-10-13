@@ -29,6 +29,8 @@ type EditorScreenProps = StackScreenProps<HomeStackParamsList, 'Editor'>;
 const initialValue = {
   title: '',
   content: '',
+  duration: '00:00:00',
+  clip: '',
 };
 const contentHeight = Dimensions.get('screen').height / 2;
 
@@ -37,7 +39,6 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
   const [note, setNote] = useState<SongInput>(song ?? initialValue);
   const {onSaveNote} = useNotes();
   const isKeyboardVisible = useKeyboardVisible();
-
   const [isRecording, setIsRecording] = useState(false);
   const [recordTime, setRecordTime] = useState('00:00:00');
   const [isPlaying, setIsPlaying] = useState(false);
@@ -57,6 +58,13 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
       }
     };
   }, [isRecording, isPlaying]);
+
+  useEffect(() => {
+    if (note) {
+      setRecordedUri(note.clip);
+      setDuration(note.duration);
+    }
+  }, []);
 
   const onChange = async (key: keyof SongInput, value: string) => {
     setNote((prev: SongInput) => ({
@@ -192,7 +200,8 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
       if (note.content === '' || note.title === '') {
         return;
       }
-      const saved = await onSaveNote(note);
+      const noteData = {...note, clip: recordedUri, duration: duration};
+      const saved = await onSaveNote(noteData);
       if (saved) {
         setNote(saved);
         ToastAndroid.showWithGravity(

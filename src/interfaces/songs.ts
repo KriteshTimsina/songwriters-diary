@@ -4,9 +4,11 @@ export interface Songs {
   content: string;
   color: string;
   isPinned: boolean;
+  duration: string;
+  clip: string | null;
 }
 
-export type SongInput = Pick<Songs, 'title' | 'content'>;
+export type SongInput = Pick<Songs, 'title' | 'content' | 'clip' | 'duration'>;
 
 export type SongContextProps = {
   notes: Songs[];
