@@ -10,10 +10,11 @@ import {
   StyleSheet,
   Text,
   ToastAndroid,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {HomeStackParamsList} from '../../navigation/HomeStack';
 import {Wrapper, TextInput} from '../../components/reuseables';
@@ -23,6 +24,10 @@ import useNotes from '../../hooks/useNotes';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import useKeyboardVisible from '../../hooks/useKeyboardVisible';
 import {NoteControls, Recording} from '../../components/reuseables';
+import {AntDesign} from '../../components/icons';
+import {Colors} from '../../constants';
+import {Modal, Portal} from 'react-native-paper';
+import {backgrounds} from '../../constants/Colors';
 
 type EditorScreenProps = StackScreenProps<HomeStackParamsList, 'Editor'>;
 
@@ -31,6 +36,7 @@ const initialValue = {
   content: '',
   duration: '00:00:00',
   clip: '',
+  background: backgrounds[0],
 };
 const contentHeight = Dimensions.get('screen').height / 2;
 
@@ -45,8 +51,22 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
   const [playTime, setPlayTime] = useState('00:00:00');
   const [duration, setDuration] = useState('00:00:00');
   const [recordedUri, setRecordedUri] = useState<string | null>(null);
+  const [themeModalVisible, setThemeModalVisible] = useState(false);
 
   const audioRecorderPlayer = useRef(new AudioRecorderPlayer());
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Pressable style={{marginRight: 20}} onPress={openThemeModal}>
+          <AntDesign name="skin" size={25} color={Colors.primary.main} />
+        </Pressable>
+      ),
+      headerStyle: {
+        backgroundColor: note.theme ?? backgrounds[0],
+      },
+    });
+  }, [note.theme]);
 
   useEffect(() => {
     return () => {
@@ -213,8 +233,16 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
     } catch (error) {}
   };
 
+  const openThemeModal = () => setThemeModalVisible(true);
+  const closeThemeModal = () => setThemeModalVisible(false);
+
+  const onChangeTheme = (background: string) => {
+    setThemeModalVisible(false);
+    setNote({...note, theme: background});
+  };
+
   return (
-    <Wrapper>
+    <Wrapper style={{backgroundColor: note.theme ?? backgrounds[0]}}>
       <KeyboardAwareScrollView>
         <TextInput
           autoFocus
@@ -254,6 +282,32 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
           saveNote={saveNote}
         />
       )}
+
+      <Portal>
+        <Modal
+          visible={themeModalVisible}
+          onDismiss={closeThemeModal}
+          contentContainerStyle={styles.modalContainer}>
+          <Text>Choose color background</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: 20,
+            }}>
+            {backgrounds.map(background => {
+              return (
+                <TouchableOpacity
+                  onPress={() => onChangeTheme(background)}
+                  key={background}
+                  style={[styles.colorContainer, {backgroundColor: background}]}
+                />
+              );
+            })}
+          </View>
+        </Modal>
+      </Portal>
     </Wrapper>
   );
 };
@@ -274,5 +328,22 @@ const styles = StyleSheet.create({
   },
   recordings: {
     gap: 10,
+  },
+  modalContainer: {
+    position: 'absolute',
+    bottom: 0,
+    height: 100,
+    backgroundColor: Colors.background,
+    right: 0,
+    left: 0,
+    elevation: 10,
+    alignItems: 'center',
+    gap: 10,
+  },
+  colorContainer: {
+    width: 30,
+    height: 30,
+    borderRadius: 30,
+    elevation: 5,
   },
 });

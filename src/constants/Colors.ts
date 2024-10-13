@@ -15,4 +15,6 @@ const Colors = {
   background: '#ffffff',
 };
 
+export const backgrounds = ['#FDF3BF', '#FFE3E3', '#D9E8FD', '#F3EDFF'];
+
 export default Colors;

@@ -6,9 +6,13 @@ export interface Songs {
   isPinned: boolean;
   duration: string;
   clip: string | null;
+  theme?: string;
 }
 
-export type SongInput = Pick<Songs, 'title' | 'content' | 'clip' | 'duration'>;
+export type SongInput = Pick<
+  Songs,
+  'title' | 'content' | 'clip' | 'duration' | 'theme'
+>;
 
 export type SongContextProps = {
   notes: Songs[];
