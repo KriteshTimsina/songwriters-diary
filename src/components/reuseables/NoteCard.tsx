@@ -6,9 +6,8 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {HomeStackParamsList} from '../../navigation/HomeStack';
 import {Colors} from '../../constants';
 import {Text} from '.';
-import Trash from '../svgs/Trash';
 import useNotes from '../../hooks/useNotes';
-import {Feather, Ioni, Octi} from '../icons';
+import {Feather, Ioni, Material} from '../icons';
 import {Modal, Portal} from 'react-native-paper';
 
 const NoteCard = ({item}: {item: Songs}) => {
@@ -46,40 +45,43 @@ const NoteCard = ({item}: {item: Songs}) => {
       onLongPress={onLongPress}
       onPress={() => navigation.navigate('Editor', {song: item})}
       style={[styles.card, {backgroundColor: item.color ?? '#D9E8FC'}]}>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <Text size="lg" weight="700">
+      <View style={styles.cardHeader}>
+        <Text style={styles.title} numberOfLines={1} size="lg" weight="700">
           {item.title}
         </Text>
-        {showOptions && (
-          <Portal>
-            <Modal
-              key={item.id}
-              visible={showOptions}
-              onDismiss={onDismiss}
-              contentContainerStyle={styles.modalContainer}>
-              <Pressable style={styles.modalButton}>
-                <Ioni size={25} name="lock-closed-outline" />
-                <Text>Hide</Text>
-              </Pressable>
-              <Pressable style={styles.modalButton}>
-                <Ioni size={25} name="lock-closed-outline" />
-                <Text>Pin</Text>
-              </Pressable>
-              <Pressable style={styles.modalButton}>
-                <Ioni size={25} name="lock-closed-outline" />
-                <Text>Move to</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => onDeleteNote(item.id)}
-                style={styles.modalButton}>
-                <Feather size={25} name="trash" />
-                <Text>Delete</Text>
-              </Pressable>
-            </Modal>
-          </Portal>
-        )}
+        {item.clip !== '' && <Material name="multitrack-audio" size={20} />}
       </View>
-      <Text color={Colors.text.base}>{item.content}</Text>
+      {showOptions && (
+        <Portal>
+          <Modal
+            key={item.id}
+            visible={showOptions}
+            onDismiss={onDismiss}
+            contentContainerStyle={styles.modalContainer}>
+            <Pressable style={styles.modalButton}>
+              <Ioni size={25} name="lock-closed-outline" />
+              <Text>Hide</Text>
+            </Pressable>
+            <Pressable style={styles.modalButton}>
+              <Ioni size={25} name="lock-closed-outline" />
+              <Text>Pin</Text>
+            </Pressable>
+            <Pressable style={styles.modalButton}>
+              <Ioni size={25} name="lock-closed-outline" />
+              <Text>Move to</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => onDeleteNote(item.id)}
+              style={styles.modalButton}>
+              <Feather size={25} name="trash" />
+              <Text>Delete</Text>
+            </Pressable>
+          </Modal>
+        </Portal>
+      )}
+      <Text numberOfLines={6} color={Colors.text.base}>
+        {item.content}
+      </Text>
     </Pressable>
   );
 };
@@ -92,13 +94,6 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5,
     borderRadius: 6,
-    alignSelf: 'flex-start',
-  },
-  delete: {
-    // position: 'absolute',
-    // right: 0,
-    // top: 0,
-    // padding: 10,
   },
   modalContainer: {
     position: 'absolute',
@@ -115,5 +110,13 @@ const styles = StyleSheet.create({
   modalButton: {
     alignItems: 'center',
     gap: 5,
+  },
+  title: {
+    width: '80%',
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });

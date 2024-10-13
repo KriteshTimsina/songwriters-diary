@@ -200,7 +200,7 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
       if (note.content === '' || note.title === '') {
         return;
       }
-      const noteData = {...note, clip: recordedUri, duration: duration};
+      const noteData = {...note, clip: recordedUri ?? '', duration: duration};
       const saved = await onSaveNote(noteData);
       if (saved) {
         setNote(saved);
