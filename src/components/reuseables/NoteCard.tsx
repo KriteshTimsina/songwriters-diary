@@ -44,7 +44,7 @@ const NoteCard = ({item}: {item: Songs}) => {
     <Pressable
       onLongPress={onLongPress}
       onPress={() => navigation.navigate('Editor', {song: item})}
-      style={[styles.card, {backgroundColor: item.color ?? '#D9E8FC'}]}>
+      style={[styles.card, {backgroundColor: item.theme ?? '#D9E8FC'}]}>
       <View style={styles.cardHeader}>
         <Text style={styles.title} numberOfLines={1} size="lg" weight="700">
           {item.title}

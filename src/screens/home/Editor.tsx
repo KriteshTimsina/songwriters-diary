@@ -36,7 +36,7 @@ const initialValue = {
   content: '',
   duration: '00:00:00',
   clip: '',
-  background: backgrounds[0],
+  theme: backgrounds[0],
 };
 const contentHeight = Dimensions.get('screen').height / 2;
 
@@ -242,7 +242,7 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
   };
 
   return (
-    <Wrapper style={{backgroundColor: note.theme ?? backgrounds[0]}}>
+    <Wrapper style={{backgroundColor: note?.theme ?? backgrounds[0]}}>
       <KeyboardAwareScrollView>
         <TextInput
           autoFocus

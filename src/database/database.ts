@@ -17,7 +17,8 @@ const createSongTable = (): Promise<void> => {
           title TEXT,
           content TEXT,
           clip TEXT, 
-          duration TEXT
+          duration TEXT,
+          theme TEXT
         )`,
         [],
         () => {
@@ -38,12 +39,13 @@ const saveNote = (songInput: SongInput): Promise<Songs | null> => {
   return new Promise((resolve, reject) => {
     db.transaction(txn => {
       txn.executeSql(
-        `INSERT INTO note (title, content, clip, duration) VALUES (?, ?, ?, ?)`,
+        `INSERT INTO note (title, content, clip, duration,theme) VALUES (?, ?, ?, ?, ?)`,
         [
           songInput.title,
           songInput.content,
           songInput.clip,
           songInput.duration,
+          songInput.theme,
         ],
         (_, result) => {
           console.log('Note saved');
@@ -80,8 +82,8 @@ const updateNote = (id: number, newNote: SongInput): Promise<void> => {
   return new Promise((resolve, reject) => {
     db.transaction(txn => {
       txn.executeSql(
-        `UPDATE note SET title = ?, content = ? WHERE id = ?`,
-        [newNote.title, newNote.content, id],
+        `UPDATE note SET title = ?, content = ?, theme = ? WHERE id = ?`,
+        [newNote.title, newNote.content, newNote.theme, id],
         () => {
           console.log('Note updated');
           resolve();

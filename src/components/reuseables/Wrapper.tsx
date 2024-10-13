@@ -5,13 +5,14 @@ import {
   Text,
   View,
   ViewProps,
+  ViewStyle,
 } from 'react-native';
 import React, {Children} from 'react';
 import {Colors} from '../../constants';
 
 type WrapperProps = {
   children: React.ReactNode;
-  style?: StyleProp<ViewProps>;
+  style?: StyleProp<ViewStyle>;
 };
 
 const Wrapper: React.FC<WrapperProps> = ({children, style}) => {
