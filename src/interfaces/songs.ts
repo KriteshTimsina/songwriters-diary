@@ -20,7 +20,7 @@ export type SongContextProps = {
   deleteNote: (id: number) => Promise<boolean>;
 };
 
-export type RecordOptions = {
+export type RecordProps = {
   records: any;
   onStartPlay: () => void;
   onStopPlay: () => void;
@@ -42,3 +42,23 @@ export type SearchbarProps = {
   searchText: string;
   onChangeText: (text: string) => void;
 };
+
+interface RecordOptions {
+  recordTime: string;
+  recordedUri: string | null;
+  isRecording: boolean;
+  playTime: string;
+  duration: string;
+  isPlaying: boolean;
+}
+
+export interface AudioHookReturn {
+  recordOptions: RecordOptions;
+  onStartRecord: () => Promise<void>;
+  onStopRecord: () => Promise<void>;
+  onStartPlay: () => Promise<void>;
+  onPausePlay: () => Promise<void>;
+  onStopPlay: () => Promise<void>;
+  setRecordedUri: React.Dispatch<React.SetStateAction<string | null>>;
+  setDuration: React.Dispatch<React.SetStateAction<string>>;
+}

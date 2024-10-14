@@ -1,6 +1,6 @@
 import {Pressable, StyleSheet, View} from 'react-native';
 import React from 'react';
-import {RecordOptions} from '../../interfaces/songs';
+import {RecordProps} from '../../interfaces/songs';
 import {Text} from '.';
 import {Colors} from '../../constants';
 import {Ioni, Octi} from '../icons';
@@ -14,7 +14,7 @@ const Recording = ({
   isPlaying,
   playTime,
   duration,
-}: RecordOptions) => {
+}: RecordProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.playbackContainer}>
