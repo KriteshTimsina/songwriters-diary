@@ -37,7 +37,7 @@ const initialValue = {
   content: '',
   duration: '00:00:00',
   clip: '',
-  theme: backgrounds[0],
+  theme: backgrounds[2],
 };
 const contentHeight = Dimensions.get('screen').height / 2;
 
@@ -73,7 +73,7 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
         </Pressable>
       ),
       headerStyle: {
-        backgroundColor: note.theme ?? backgrounds[0],
+        backgroundColor: note.theme,
       },
     });
   }, [note.theme]);
@@ -119,7 +119,7 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
   };
 
   return (
-    <Wrapper style={{backgroundColor: note?.theme ?? backgrounds[0]}}>
+    <Wrapper style={{backgroundColor: note?.theme}}>
       <KeyboardAwareScrollView>
         <TextInput
           autoFocus
@@ -142,7 +142,6 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
               onStartPlay={onStartPlay}
               onStopPlay={onStopPlay}
               isPlaying={isPlaying}
-              // key={record}
               duration={duration}
               playTime={playTime}
               records={recordedUri}
@@ -166,13 +165,7 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
           onDismiss={closeThemeModal}
           contentContainerStyle={styles.modalContainer}>
           <Text>Choose color background</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              gap: 20,
-            }}>
+          <View style={styles.colors}>
             {backgrounds.map(background => {
               return (
                 <TouchableOpacity
@@ -222,5 +215,11 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 30,
     elevation: 5,
+  },
+  colors: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 20,
   },
 });
