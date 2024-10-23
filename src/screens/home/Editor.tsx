@@ -48,15 +48,7 @@ const Editor = ({navigation, route}: EditorScreenProps) => {
   const isKeyboardVisible = useKeyboardVisible();
   const [themeModalVisible, setThemeModalVisible] = useState(false);
   const {
-    recordOptions: {
-      duration,
-      isPlaying,
-      isRecording,
-      playTime,
-      recordTime,
-      recordedUri,
-    },
-    onPausePlay,
+    recordOptions: {duration, isPlaying, isRecording, playTime, recordedUri},
     onStartPlay,
     onStartRecord,
     onStopPlay,
